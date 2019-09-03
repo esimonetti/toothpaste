@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+// Enrico Simonetti
+// enricosimonetti.com
+//
+// 2019-09-03 on Sugar 9.0.0
+
+if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
+    require $autoload;
+}
+
+use Toothpaste\Toothpaste;
+
+echo (new Toothpaste())->getSoftwareInfo() . PHP_EOL;
+
+exit(0);

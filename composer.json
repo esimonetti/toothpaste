@@ -1,0 +1,28 @@
+{
+    "name": "esimonetti/toothpaste",
+    "description": "Utility to uncover possible problems with an installed Sugar system via CLI",
+    "type": "package",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Enrico Simonetti",
+            "email": "enrico.simonetti@gmail.com",
+            "homepage": "http://enricosimonetti.com"
+        }
+    ],
+    "bin": [
+        "bin/toothpaste"
+    ],
+    "require": {
+        "php": ">=7.1",
+        "symfony/console": "4.3.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Toothpaste\\": "src/"
+        }
+    }
+}
