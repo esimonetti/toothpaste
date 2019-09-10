@@ -3,15 +3,24 @@
 
 // Enrico Simonetti
 // enricosimonetti.com
-//
-// 2019-09-03 on Sugar 9.0.0
 
 if (is_file($autoload = getcwd() . '/vendor/autoload.php')) {
     require $autoload;
 }
 
 use Toothpaste\Toothpaste;
+use Symfony\Component\Console\Application;
 
-echo (new Toothpaste())->getSoftwareInfo() . PHP_EOL;
+echo Toothpaste::getSoftwareInfo() . PHP_EOL;
+
+if (extension_loaded('xdebug')) {
+    echo 'Xdebug is enabled on this system. It is highly recommended to disable Xdebug on PHP CLI before running this script. Xdebug will cause unwanted slowness.' . PHP_EOL;
+}
+
+$application = new Application(Toothpaste::getSoftwareName(), Toothpaste::getSoftwareVersionNumber());
+
+$application->add(new \Toothpaste\Commands\RepairCommand());
+
+$application->run();
 
 exit(0);

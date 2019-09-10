@@ -2,22 +2,22 @@
 
 // Enrico Simonetti
 // enricosimonetti.com
-//
-// 2019-09-03 on Sugar 9.0.0
 
 namespace Toothpaste;
 
 class Toothpaste
 {
-    const SW_VERSION = '0.0.1';
+    const SW_VERSION = '0.0.2';
     const SW_NAME = 'Toothpaste';
 
-    private static function getSoftwareVersionNumber()
+    protected static $startTime;
+
+    public static function getSoftwareVersionNumber()
     {
         return self::SW_VERSION;
     }
     
-    private static function getSoftwareName()
+    public static function getSoftwareName()
     {
         return self::SW_NAME;
     }
@@ -25,5 +25,25 @@ class Toothpaste
     public static function getSoftwareInfo()
     {
         return self::getSoftwareName() . ' v' . self::getSoftwareVersionNumber();
+    }
+
+    public static function resetStartTime()
+    {
+        self::$startTime = microtime(true);
+        register_shutdown_function(
+            function($start) {
+                print('Execution completed in ' . sprintf('%0.2f', round((microtime(true) - $start), 2)) . ' seconds.' . PHP_EOL);
+            },
+            self::$startTime
+        );
+    }
+
+    public static function getStartTime()
+    {
+        if (empty(self::$startTime)) {
+            self::resetStartTime();
+        }
+
+        return self::$startTime;
     }
 }
