@@ -1,6 +1,7 @@
 <?php
 
-namespace Toothpaste\Sugar;
+namespace Toothpaste\Sugar\Actions;
+use Toothpaste\Sugar\Instance;
 
 class Repair
 {

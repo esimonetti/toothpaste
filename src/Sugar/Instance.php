@@ -36,12 +36,12 @@ class Instance
             }
         }
 
-        if (empty($current_language)) {
-            $current_language = $sugar_config['default_language'];
+        if (empty($GLOBALS['current_language'])) {
+            $GLOBALS['current_language'] = $sugar_config['default_language'];
         }
-        $app_list_strings = return_app_list_strings_language($current_language);
-        $app_strings = return_application_language($current_language);
-        $mod_strings = return_module_language($current_language, 'Administration');
+        $GLOBALS['app_list_strings'] = return_app_list_strings_language($GLOBALS['current_language']);
+        $GLOBALS['app_strings'] = return_application_language($GLOBALS['current_language']);
+        $GLOBALS['mod_strings'] = return_module_language($GLOBALS['current_language'], 'Administration');
 
         $u = \BeanFactory::newBean('Users');
         $GLOBALS['current_user'] = $u->getSystemUser();

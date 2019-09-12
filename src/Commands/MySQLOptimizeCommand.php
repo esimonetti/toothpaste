@@ -8,22 +8,22 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Toothpaste\Sugar;
 
-class RepairCommand extends Command
+class MySQLOptimizeCommand extends Command
 {
-    protected static $defaultName = 'sugar:repair';
+    protected static $defaultName = 'sugar:mysql:optimize';
 
     protected function configure()
     {
         $this
-            ->setDescription('Repair a Sugar instance')
-            ->setHelp('This command helps you repair a Sugar instance')
+            ->setDescription('Optimize all MySQL tables')
+            ->setHelp('Run MySQL OPTIMIZE on all MySQL tables of this instance. It will temporarily lock the table for write purposes.')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Executing Repair command...');
+        $output->writeln('Executing MySQL Optimize command across all tables...');
 
         $instance = $input->getOption('instance');
         $path = Sugar\Instance::validate($instance);
@@ -33,7 +33,7 @@ class RepairCommand extends Command
         if (!empty($path)) {
             $output->writeln('Entering ' . $path . '...');
             Sugar\Instance::setup();
-            Sugar\Actions\Repair::executeSimpleRepair();
+            Sugar\Actions\MySQLOptimize::executeTablesOptimize();
         } else {
             $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
         }
