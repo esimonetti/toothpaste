@@ -22,6 +22,7 @@ $application = new Application(Toothpaste::getSoftwareName(), Toothpaste::getSof
 $application->add(new \Toothpaste\Commands\RepairCommand());
 $application->add(new \Toothpaste\Commands\MySQLOptimizeCommand());
 $application->add(new \Toothpaste\Commands\MySQLOptimizeWithIndexManipulationCommand());
+$application->add(new \Toothpaste\Commands\RecordCountCommand());
 
 $application->run();
 
