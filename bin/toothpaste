@@ -23,6 +23,7 @@ $application->add(new \Toothpaste\Commands\RepairCommand());
 $application->add(new \Toothpaste\Commands\MySQLOptimizeCommand());
 $application->add(new \Toothpaste\Commands\MySQLOptimizeWithIndexManipulationCommand());
 $application->add(new \Toothpaste\Commands\RecordCountCommand());
+$application->add(new \Toothpaste\Commands\TeamSetCleanupCommand());
 
 $application->run();
 
