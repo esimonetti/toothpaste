@@ -78,6 +78,7 @@ class Rest extends BaseAction
     {
         // if there is a failure, re-try if there is a last action
         if (!empty($this->lastRequestData)) {
+            $this->writeln('Trying to perform the last action once again...');
             $this->completeRestCall($this->lastRequestData['type'], $this->lastRequestData['url'], $this->lastRequestData['params']);
         }
     }
@@ -89,6 +90,7 @@ class Rest extends BaseAction
             return $this->accessToken;
         }
 
+        $this->writeln('Performing a system login');
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', $this->getLoginUrl(), [
             //'debug' => TRUE,
@@ -109,6 +111,7 @@ class Rest extends BaseAction
             }
         }
 
+        $this->writeln('The login attempt did not succeed');
         unset($this->accessToken);
         unset($this->refreshToken);
         unset($this->expiresIn);
@@ -117,6 +120,7 @@ class Rest extends BaseAction
 
     protected function refreshToken()
     {
+        $this->writeln('Refreshing a current token');
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', $this->getLoginUrl(), [
             //'debug' => TRUE,
@@ -137,6 +141,7 @@ class Rest extends BaseAction
             }
         }
 
+        $this->writeln('The token refresh attempt did not succeed');
         unset($this->accessToken);
         unset($this->refreshToken);
         unset($this->expiresIn);
@@ -155,7 +160,6 @@ class Rest extends BaseAction
 
         // store action
         $this->storeCurrentAction(['type' => $type, 'url' => $uri, 'params' => $params]);
-
         $client = new \GuzzleHttp\Client();
         $response = $client->request($type, $this->getBaseUrl() . $uri, [
             //'debug' => TRUE,
@@ -183,6 +187,7 @@ class Rest extends BaseAction
                     return $this->handleValidResponse($response);
                 } else {
                     // terminate here
+                    $this->writeln('The request failed multiple times, terminating');
                     return ['error' => 'Request failed multiple times'];
                 }
             }

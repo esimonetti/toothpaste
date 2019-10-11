@@ -26,7 +26,8 @@ class MassModuleRetrievalCommand extends Command
             ->addOption('module', null, InputOption::VALUE_REQUIRED, 'Module to retrieve data from')
             ->addOption('dir', null, InputOption::VALUE_REQUIRED, 'Output directory')
             ->addOption('limit', null, InputOption::VALUE_OPTIONAL, 'Limit', 1000)
-            ->addOption('filter', null, InputOption::VALUE_OPTIONAL, 'Filter', [])
+            ->addOption('offset', null, InputOption::VALUE_OPTIONAL, 'Limit', 0)
+            ->addOption('filter', null, InputOption::VALUE_OPTIONAL, "Filter (example --filter='[{\\\"last_name\\\":{\\\"\\\$starts\\\":[\\\"a\\\"]}}]')", [])
         ;
     }
 
@@ -40,14 +41,15 @@ class MassModuleRetrievalCommand extends Command
         $module = $input->getOption('module');
         $dir = $input->getOption('dir');
         $limit = $input->getOption('limit');
+        $offset = $input->getOption('offset');
         $filter = $input->getOption('filter');
 
         if (!empty($url) && !empty($user) && !empty($pass) && !empty($module) && !empty($dir) && !empty($limit)) {
             $logic = new Sugar\Actions\MassRetrieverApi($url, 'base', $user, $pass, $module); 
             $logic->setLogger($output);
-            $output->writeln('Executing retrival of all records for module ' . $module  . ' in chunks of ' . $limit  . ' records, and saving them into ' . $dir . ' ...');
+            $output->writeln('Executing retrival of the records for module ' . $module  . ' in chunks of ' . $limit  . ' records, from offset ' . $offset . ' and saving them into ' . $dir . ' ...');
             $output->writeln('Connecting to url ' . $url . '...');
-            $savedCount = $logic->initiateRetrieve($module, $filter, $limit, $dir);
+            $savedCount = $logic->initiateRetrieve($module, $filter, $limit, $dir, $offset);
             $output->writeln('Saved ' . $savedCount . ' ' . strtolower($module) . ' records in ' . $dir);
         } else {
             $output->writeln('Please make sure all required parameters are passed correctly to the command. Check with --help for the correct syntax');
