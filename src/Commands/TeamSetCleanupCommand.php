@@ -18,8 +18,8 @@ class TeamSetCleanupCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Soft delete unused teamsets - EXPERIMENTAL, USE AT OWN RISK!')
-            ->setHelp('Soft delete unused teamsets')
+            ->setDescription('Soft delete unused Team Sets - EXPERIMENTAL, USE AT OWN RISK!')
+            ->setHelp('Soft delete unused Team Sets')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
         ;
     }
@@ -28,7 +28,7 @@ class TeamSetCleanupCommand extends Command
     {
         \Toothpaste\Toothpaste::resetStartTime();
 
-        $output->writeln('Executing soft-delete of team sets records not found across all tables...');
+        $output->writeln('Executing soft-delete of Team Sets records not found across all tables and of null records...');
 
         $instance = $input->getOption('instance');
         if (empty($instance)) {
@@ -44,18 +44,16 @@ class TeamSetCleanupCommand extends Command
                 $logic = new Sugar\Actions\TeamSetsCleanup();
                 $logic->setLogger($output);
 
+                $logic->softDeleteNullTeamSetModules();
                 $deleted = $logic->softDeleteUnusedTeamSets();
-                $output->writeln('Soft deleted ' . $deleted . ' unused team sets.');
+                $output->writeln('Soft deleted ' . $deleted . ' unused Team Sets.');
                 if ($deleted > 0) {
                     $output->writeln('');
-                    $output->writeln('Deleted the following team sets:');
-                    $output->writeln($logic->getDeletedTeamSets());
+                    $output->writeln('To revert the database changes just completed, execute the following SQL queries:');
+                    $output->writeln($logic->produceRevertQueries());
                     $output->writeln('');
-                    $output->writeln('To revert, execute the following SQL queries:');
-                    $output->writeln($logic->getUndeleteTeamSetsQueries());
-                    $output->writeln('');
-                    $output->writeln('To proceed with the hard delete of the soft deleted records perform the following SQL queries');
-                    $output->writeln('DELETE from where deleted=\'1\'');
+                    $output->writeln('To proceed with the hard delete of the soft deleted records, perform the following SQL queries:');
+                    $output->writeln($logic->produceDeleteQueries());
                 }
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
