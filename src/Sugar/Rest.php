@@ -1,8 +1,11 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Sugar;
 
-class Rest
+class Rest extends BaseAction
 {
     protected $user;
     protected $password;

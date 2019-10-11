@@ -1,18 +1,21 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Sugar\Actions;
 use Toothpaste\Sugar\Instance;
 
 class MySQLOptimizeIndex extends MySQLOptimize
 {
-    public static function executeTablesOptimize()
+    public function executeTablesOptimize()
     {
-        if (self::isMySQL()) {
-            echo 'Running optimize on all database tables, with index dropping and recreation' . PHP_EOL;
+        if ($this->isMySQL()) {
+            $this->writeln('Running optimize on all database tables, with index dropping and recreation');
             $db = \DBManagerFactory::getInstance();
             $totals = ['initial' => 0, 'final' => 0];
             $results = [];
-            $processedTables = array();
+            $processedTables = [];
 
             // modules
             $fullModuleList = array_merge($GLOBALS['beanList'], $GLOBALS['app_list_strings']['moduleList']);
@@ -29,7 +32,7 @@ class MySQLOptimizeIndex extends MySQLOptimize
                     // some tables are processed multiple times as they are considered storage for multiple beans, and I have to keep it that way or the indices won't be rebuilt properly
                     if (!isset($results[$table]['initial'])) {
                         // store initial size
-                        $stmt = $db->getConnection()->executeQuery($queryDataSizeEstimation, array($table));
+                        $stmt = $db->getConnection()->executeQuery($queryDataSizeEstimation, [$table]);
                         if ($row = $stmt->fetch()) {
                             $results[$table]['initial'] = $row['size'];
                             $totals['initial'] += $row['size'];
@@ -49,29 +52,26 @@ class MySQLOptimizeIndex extends MySQLOptimize
                         $processedTables[$table] .= $queries;
                         // running optimize table
                         $query = 'OPTIMIZE TABLE ' . $table;
-                        echo 'Running query ' . $query . '... ';
+                        $this->write('Running query ' . $query . '... ');
                         $stmt = $db->getConnection()->executeQuery($query);
-                        echo 'done.' . PHP_EOL;
+                        $this->write('done. ');
                         $processedTables[$table] .= PHP_EOL . $query . PHP_EOL;
                         // repair table
                         $queries = $db->repairTable($bean);        
                         $processedTables[$table] .= $queries;
                     }
                     // check final size
-                    $stmt = $db->getConnection()->executeQuery($queryDataSizeEstimation, array($table));
+                    $stmt = $db->getConnection()->executeQuery($queryDataSizeEstimation, [$table]);
                     if ($row = $stmt->fetch()) {
                         $results[$table]['final'] = $row['size'];
                         $totals['final'] += $row['size'];
                     }
-                    echo $table . PHP_EOL;
-                    echo ' Initial est. size: ' . $results[$table]['initial'] . ' MB. Current est size: ' . $results[$table]['final'] . ' MB' . PHP_EOL;
+                    $this->writeln('Initial est. size: ' . $results[$table]['initial'] . ' MB. Current est size: ' . $results[$table]['final'] . ' MB');
                 }
             }
-            print_r($processedTables);
-            echo PHP_EOL . 'Total initial est. size was: ' . $totals['initial'] . ' MB, total current est. size is: ' . $totals['final'] . ' MB' . PHP_EOL;
-            echo PHP_EOL . PHP_EOL;
+            $this->writeln(PHP_EOL . 'Total initial est. size was: ' . $totals['initial'] . ' MB, total current est. size is: ' . $totals['final'] . ' MB');
         } else {
-           echo 'The database in use by this Sugar installation is not MySQL, aborting...' . PHP_EOL; 
+           $this->writeln('The database in use by this Sugar installation is not MySQL, aborting...'); 
         }
     }
 }

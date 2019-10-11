@@ -1,45 +1,51 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Sugar\Actions;
 use Toothpaste\Sugar\Instance;
+use Toothpaste\Sugar;
 
-class Repair
+class Repair extends Sugar\BaseAction
 {
-    protected static function simpleRepair()
+    protected function simpleRepair()
     {
         require_once('modules/Administration/QuickRepairAndRebuild.php');
 
         // repair
         $repair = new \RepairAndClear();
-        $repair->repairAndClearAll(array('clearAll'), array($mod_strings['LBL_ALL_MODULES']), true, false, '');
+        $repair->repairAndClearAll(['clearAll'], [$mod_strings['LBL_ALL_MODULES']], true, false, '');
     }
 
-    public static function executeSimpleRepair()
+    public function executeSimpleRepair()
     {
-        echo 'Executing simple repair...' . PHP_EOL;
-        self::removeTeamFiles();
+        $this->writeln('Executing simple repair...');
+        $this->removeTeamFiles();
+        $this->writeln('Clearing cache...');
         Instance::clearCache();
         Instance::buildAutoloaderCache();
-        self::simpleRepair();
+        $this->simpleRepair();
         Instance::buildAutoloaderCache();
-        self::removeJsAndLanguages();
+        $this->removeJsAndLanguages();
+        $this->writeln('Executing basic instance warm-up...');
         Instance::basicWarmUp();
     }
 
-    protected static function removeJsAndLanguages()
+    protected function removeJsAndLanguages()
     {
         // remove some stuff
         \LanguageManager::removeJSLanguageFiles();
         \LanguageManager::clearLanguageCache();
     }
 
-    protected static function removeTeamFiles()
+    protected function removeTeamFiles()
     {
         // remove team cache files
-        $files_to_remove = array(
+        $files_to_remove = [
             'cache/modules/Teams/TeamSetMD5Cache.php',
             'cache/modules/Teams/TeamSetCache.php'
-        );
+        ];
         foreach ($files_to_remove as $file) {
             $file = \SugarAutoloader::normalizeFilePath($file);
             if (\SugarAutoloader::fileExists($file)) {

@@ -1,5 +1,8 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Commands;
 
 use Symfony\Component\Console\Command\Command;
@@ -23,19 +26,27 @@ class RepairCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        \Toothpaste\Toothpaste::resetStartTime();
+
         $output->writeln('Executing Repair command...');
 
         $instance = $input->getOption('instance');
-        $path = Sugar\Instance::validate($instance);
-
-        \Toothpaste\Toothpaste::resetStartTime();
-
-        if (!empty($path)) {
-            $output->writeln('Entering ' . $path . '...');
-            Sugar\Instance::setup();
-            Sugar\Actions\Repair::executeSimpleRepair();
+        if (empty($instance)) {
+            $output->writeln('Please provide the instance path. Check with --help for the correct syntax');
         } else {
-            $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
+            $path = Sugar\Instance::validate($instance);
+
+            $logic = new Sugar\Actions\Repair();
+            $logic->setLogger($output);
+
+            if (!empty($path)) {
+                $output->writeln('Entering ' . $path . '...');
+                $output->writeln('Setting up instance...');
+                Sugar\Instance::setup();
+                $logic->executeSimpleRepair();
+            } else {
+                $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
+            }
         }
     }
 }

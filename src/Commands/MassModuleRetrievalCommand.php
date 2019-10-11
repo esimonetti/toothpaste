@@ -1,5 +1,8 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Commands;
 
 use Symfony\Component\Console\Command\Command;
@@ -29,6 +32,8 @@ class MassModuleRetrievalCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        \Toothpaste\Toothpaste::resetStartTime();
+
         $url = $input->getOption('url');
         $user = $input->getOption('user');
         $pass = $input->getOption('pass');
@@ -37,17 +42,15 @@ class MassModuleRetrievalCommand extends Command
         $limit = $input->getOption('limit');
         $filter = $input->getOption('filter');
 
-        $output->writeln('Executing retrival of all records for module ' . $module  . ' in chunks of ' . $limit  . ' records, and saving them into ' . $dir . ' ...');
-
-        \Toothpaste\Toothpaste::resetStartTime();
-
         if (!empty($url) && !empty($user) && !empty($pass) && !empty($module) && !empty($dir) && !empty($limit)) {
             $logic = new Sugar\Actions\MassRetrieverApi($url, 'base', $user, $pass, $module); 
+            $logic->setLogger($output);
+            $output->writeln('Executing retrival of all records for module ' . $module  . ' in chunks of ' . $limit  . ' records, and saving them into ' . $dir . ' ...');
             $output->writeln('Connecting to url ' . $url . '...');
             $savedCount = $logic->initiateRetrieve($module, $filter, $limit, $dir);
             $output->writeln('Saved ' . $savedCount . ' ' . strtolower($module) . ' records in ' . $dir);
         } else {
-            $output->writeln('Please make sure all required parameters are passed correctly to the command. Aborting...');
+            $output->writeln('Please make sure all required parameters are passed correctly to the command. Check with --help for the correct syntax');
         }
     }
 }

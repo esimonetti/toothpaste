@@ -1,5 +1,8 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Sugar;
 
 class Instance
@@ -18,7 +21,6 @@ class Instance
 
     public static function setup()
     {
-        echo 'Setting up instance... ' . PHP_EOL;
         define('sugarEntry', true);
 
         require_once('config.php');
@@ -49,7 +51,6 @@ class Instance
 
     public static function clearCache()
     {
-        echo 'Clearing cache...' . PHP_EOL;
         if (\SugarCache::instance()->useBackend()) {
             // clear cache
             \SugarCache::instance()->reset();
@@ -71,7 +72,6 @@ class Instance
 
     public static function basicWarmUp()
     {
-        echo 'Executing basic instance warm-up...' . PHP_EOL;
         // rebuild some stuff
         self::buildAutoloaderCache();
 
@@ -81,7 +81,7 @@ class Instance
         foreach ($full_module_list as $module => $label) {
             $bean = \BeanFactory::newBean($module);
             // load language too
-            \LanguageManager::createLanguageFile($module, array('default'), true);
+            \LanguageManager::createLanguageFile($module, ['default'], true);
             $mod_strings = return_module_language($current_language, $module);
         }
 

@@ -1,11 +1,15 @@
 <?php
 
+// Enrico Simonetti
+// enricosimonetti.com
+
 namespace Toothpaste\Sugar\Actions;
 use Toothpaste\Sugar\Instance;
+use Toothpaste\Sugar;
 
-class RecordCount
+class RecordCount extends Sugar\BaseAction
 {
-    public static function count()
+    public function count()
     {
         $total = 0;
         $results = [];
@@ -30,22 +34,27 @@ class RecordCount
                     $results[$table] = $row['count'];
                     $total += $results[$table];
                 }
-                echo $table . ' has ' . $results[$table] . ' records' . PHP_EOL;
+                // only show records that have a count
+                if (!empty($results[$table])) {
+                    $this->writeln($table . ' has ' . $results[$table] . ' records');
+                }
             }
         }
         $results['total_db_records'] = $total;
 
-        echo 'The database has in total ' . $total . ' records' . PHP_EOL;
+        $this->writeln('');
+        $this->writeln('The database has in total ' . $total . ' records');
+        $this->writeln('');
 
-        echo 'JSON output:' . PHP_EOL . PHP_EOL;
-        echo json_encode($results);
-        echo PHP_EOL . PHP_EOL;
+        //$this->writeln('JSON output:');
+        //$this->writeln(json_encode($results));
+        //$this->writeln(PHP_EOL);
 
-        echo 'CSV output:' . PHP_EOL . PHP_EOL;
-        echo '"table","count"'.PHP_EOL;
+        $this->writeln('CSV output:' . PHP_EOL);
+        $this->writeln('"table","count"');
         foreach ($results as $table => $count) {
-            echo '"' . $table . '","' . $count . '"' . PHP_EOL;
+            $this->writeln('"' . $table . '","' . $count . '"');
         }
-        echo PHP_EOL . PHP_EOL;
+        $this->writeln('');
     }
 }

@@ -8,25 +8,27 @@
 // soft delete unused team sets
 
 namespace Toothpaste\Sugar\Actions;
+use Toothpaste\Sugar;
 
-class TeamSetsCleanup
+class TeamSetsCleanup extends Sugar\BaseAction
 {
     protected $db;
-    protected $tables = array();
-    protected $deleted_teamsets = array();
-    protected $undelete_queries = array();
+    protected $tables = [];
+    protected $deleted_teamsets = [];
+    protected $undelete_queries = [];
+    protected $date_modified;
 
-    protected $valid_fields = array(
+    protected $valid_fields = [
         'team_set_id',
         'acl_team_set_id',
-    );
+    ];
 
-    protected $tables_to_ignore = array(
+    protected $tables_to_ignore = [
         'team_sets_modules',
         'team_sets_teams',
         'team_sets_users_1',
         'team_sets_users_2',
-    );
+    ];
 
     public $max_sleep_time = 20;
 
@@ -34,6 +36,7 @@ class TeamSetsCleanup
     {
         $this->db = \DBManagerFactory::getInstance();
         $this->tables = $this->getTablesWithTeams();
+        $this->date_modified = gmdate('Y-m-d H:i:s');
     }
 
     public function microSleep()
@@ -139,7 +142,7 @@ class TeamSetsCleanup
     public function getTablesWithTeams()
     {
         $db_tables = $this->db->getTablesArray();
-        $tables_with_teams = array();
+        $tables_with_teams = [];
 
         foreach ($db_tables as $table) {
             if (!in_array($table, $this->tables_to_ignore)) {
@@ -158,7 +161,7 @@ class TeamSetsCleanup
         $team_sets = $this->getAllTeamSets();
         $tables = $this->tables;
 
-        $unused_teamsets = array();
+        $unused_teamsets = [];
         if (!empty($team_sets) && !empty($tables)) {
             foreach ($team_sets as $team_set_id) {
                 $keep_teamset = false;
@@ -197,7 +200,7 @@ class TeamSetsCleanup
     protected function setDeletedTeamSets($teamsets)
     {
         if (!is_array($teamsets)) {
-            $teamsets = array();
+            $teamsets = [];
         }
         $this->deleted_teamsets = $teamsets;
     }
@@ -281,7 +284,7 @@ class TeamSetsCleanup
 
     protected function convertSingleResultSet($results, $fieldname)
     {
-        $output = array();
+        $output = [];
         if (!empty($results)) {
             foreach ($results as $result) {
                 if (isset($result[$fieldname])) {
