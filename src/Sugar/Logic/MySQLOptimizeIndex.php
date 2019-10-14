@@ -3,7 +3,7 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar\Actions;
+namespace Toothpaste\Sugar\Logic;
 use Toothpaste\Sugar\Instance;
 
 class MySQLOptimizeIndex extends MySQLOptimize

@@ -27,7 +27,8 @@ class MassModuleRetrievalCommand extends Command
             ->addOption('dir', null, InputOption::VALUE_REQUIRED, 'Output directory')
             ->addOption('limit', null, InputOption::VALUE_OPTIONAL, 'Limit', 1000)
             ->addOption('offset', null, InputOption::VALUE_OPTIONAL, 'Limit', 0)
-            ->addOption('filter', null, InputOption::VALUE_OPTIONAL, "Filter (example --filter='[{\\\"last_name\\\":{\\\"\\\$starts\\\":[\\\"a\\\"]}}]')", [])
+            //->addOption('filter', null, InputOption::VALUE_OPTIONAL, "Filter (example --filter='[{\\\"last_name\\\":{\\\"\\\$starts\\\":[\\\"a\\\"]}}]')", [])
+            ->addOption('filter', null, InputOption::VALUE_OPTIONAL, "Filter (example --filter='[{\"last_name\":{\"\$starts\":[\"a\"]}}]')", [])
         ;
     }
 
@@ -45,7 +46,7 @@ class MassModuleRetrievalCommand extends Command
         $filter = $input->getOption('filter');
 
         if (!empty($url) && !empty($user) && !empty($pass) && !empty($module) && !empty($dir) && !empty($limit)) {
-            $logic = new Sugar\Actions\MassRetrieverApi($url, 'base', $user, $pass, $module); 
+            $logic = new Sugar\Logic\MassRetrieverApi($url, 'base', $user, $pass, $module); 
             $logic->setLogger($output);
             $output->writeln('Executing retrival of the records for module ' . $module  . ' in chunks of ' . $limit  . ' records, from offset ' . $offset . ' and saving them into ' . $dir . ' ...');
             $output->writeln('Connecting to url ' . $url . '...');

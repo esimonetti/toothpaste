@@ -36,13 +36,12 @@ class RecordCountCommand extends Command
         } else {
             $path = Sugar\Instance::validate($instance);
 
-            $logic = new Sugar\Actions\RecordCount();
-            $logic->setLogger($output);
-
             if (!empty($path)) {
                 $output->writeln('Entering ' . $path . '...');
                 $output->writeln('Setting up instance...');
                 Sugar\Instance::setup();
+                $logic = new Sugar\Logic\RecordCount();
+                $logic->setLogger($output);
                 $logic->count();
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');

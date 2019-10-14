@@ -5,7 +5,7 @@
 
 namespace Toothpaste\Sugar;
 
-class Rest extends BaseAction
+class Rest extends BaseLogic
 {
     protected $user;
     protected $password;

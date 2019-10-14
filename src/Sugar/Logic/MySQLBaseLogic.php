@@ -3,9 +3,10 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar;
+namespace Toothpaste\Sugar\Logic;
+use Toothpaste\Sugar;
 
-class MySQLBaseAction extends BaseAction
+class MySQLBaseLogic extends Sugar\BaseLogic
 {
     protected function isMySQL()
     {

@@ -13,6 +13,11 @@ use Symfony\Component\Console\Application;
 
 echo Toothpaste::getSoftwareInfo() . PHP_EOL;
 
+if (!Toothpaste::isLinux()) {
+    echo 'This software runs exclusively under Linux, aborting.' . PHP_EOL;
+    exit(1);
+}
+
 if (extension_loaded('xdebug')) {
     echo 'Xdebug is enabled on this system. It is highly recommended to disable Xdebug on PHP CLI before running this script. Xdebug will cause unwanted slowness.' . PHP_EOL;
 }
@@ -25,6 +30,10 @@ $application->add(new \Toothpaste\Commands\MySQLOptimizeWithIndexManipulationCom
 $application->add(new \Toothpaste\Commands\RecordCountCommand());
 $application->add(new \Toothpaste\Commands\TeamSetCleanupCommand());
 $application->add(new \Toothpaste\Commands\MassModuleRetrievalCommand());
+$application->add(new \Toothpaste\Commands\GenerateMetadataCommand());
+$application->add(new \Toothpaste\Commands\ExtractMetadataCommand());
+$application->add(new \Toothpaste\Commands\MaintenanceOnCommand());
+$application->add(new \Toothpaste\Commands\MaintenanceOffCommand());
 
 $application->run();
 

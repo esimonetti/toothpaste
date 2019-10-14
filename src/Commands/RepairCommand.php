@@ -36,13 +36,12 @@ class RepairCommand extends Command
         } else {
             $path = Sugar\Instance::validate($instance);
 
-            $logic = new Sugar\Actions\Repair();
-            $logic->setLogger($output);
-
             if (!empty($path)) {
                 $output->writeln('Entering ' . $path . '...');
                 $output->writeln('Setting up instance...');
                 Sugar\Instance::setup();
+                $logic = new Sugar\Logic\Repair();
+                $logic->setLogger($output);
                 $logic->executeSimpleRepair();
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');

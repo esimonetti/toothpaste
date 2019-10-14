@@ -7,7 +7,7 @@ namespace Toothpaste;
 
 class Toothpaste
 {
-    const SW_VERSION = '0.0.3';
+    const SW_VERSION = '0.0.5';
     const SW_NAME = 'Toothpaste';
 
     protected static $startTime;
@@ -25,6 +25,16 @@ class Toothpaste
     public static function getSoftwareInfo()
     {
         return self::getSoftwareName() . ' v' . self::getSoftwareVersionNumber();
+    }
+
+    public static function getOS()
+    {
+        return strtolower(php_uname('s'));
+    }
+
+    public static function isLinux()
+    {
+        return (self::getOS() === 'linux') ? true : false;
     }
 
     public static function resetStartTime()

@@ -5,7 +5,7 @@
 
 namespace Toothpaste\Sugar;
 
-class BaseAction
+class BaseLogic
 {
     protected $logger;
 
@@ -20,8 +20,6 @@ class BaseAction
     {
         if ($this->logger) {
             $this->logger->writeln($message);
-        } else {
-            //echo $message . PHP_EOL;
         }
     }
 
@@ -29,8 +27,18 @@ class BaseAction
     {
         if ($this->logger) {
             $this->logger->write($message);
-        } else {
-            //echo $message;
+        }
+    }
+
+    public function addTrailingSlash($string)
+    {
+        return rtrim($string, '/') . '/';
+    }
+
+    protected function createDir($dir)
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
         }
     }
 }

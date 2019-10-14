@@ -3,15 +3,15 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar\Actions;
+namespace Toothpaste\Sugar\Logic;
 use Toothpaste\Sugar\Instance;
 use Toothpaste\Sugar;
 
-class Repair extends Sugar\BaseAction
+class Repair extends Sugar\BaseLogic
 {
     protected function simpleRepair()
     {
-        require_once('modules/Administration/QuickRepairAndRebuild.php');
+        //require_once('modules/Administration/QuickRepairAndRebuild.php');
 
         // repair
         $repair = new \RepairAndClear();

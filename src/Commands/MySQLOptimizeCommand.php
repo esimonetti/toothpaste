@@ -36,13 +36,12 @@ class MySQLOptimizeCommand extends Command
         } else {
             $path = Sugar\Instance::validate($instance);
 
-            $logic = new Sugar\Actions\MySQLOptimize();
-            $logic->setLogger($output);
-
             if (!empty($path)) {
                 $output->writeln('Entering ' . $path . '...');
                 $output->writeln('Setting up instance...');
                 Sugar\Instance::setup();
+                $logic = new Sugar\Logic\MySQLOptimize();
+                $logic->setLogger($output);
                 $logic->executeTablesOptimize();
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');

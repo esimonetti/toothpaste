@@ -37,13 +37,12 @@ class MySQLOptimizeWithIndexManipulationCommand extends Command
         } else {
             $path = Sugar\Instance::validate($instance);
 
-            $logic = new Sugar\Actions\MySQLOptimizeIndex();
-            $logic->setLogger($output);
-
             if (!empty($path)) {
                 $output->writeln('Entering ' . $path . '...');
                 $output->writeln('Setting up instance...');
                 Sugar\Instance::setup();
+                $logic = new Sugar\Logic\MySQLOptimizeIndex();
+                $logic->setLogger($output);
                 $logic->executeTablesOptimize();
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');

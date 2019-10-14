@@ -3,7 +3,7 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar\Actions;
+namespace Toothpaste\Sugar\Logic;
 use Toothpaste\Sugar;
 
 class MassRetrieverApi extends Sugar\Rest
@@ -56,10 +56,9 @@ class MassRetrieverApi extends Sugar\Rest
 
     protected function saveRecordsToDisk($module, $outputDir, $records)
     {
-        $destDir = $outputDir . '/' . strtolower($module);
-        if (!is_dir($destDir)) {
-            mkdir($destDir, 0777, true);
-        }
+        $outputDir = $this->addTrailingSlash($outputDir);
+        $destDir = $outputDir . strtolower($module);
+        $this->createDir($destDir);
        
         $fileName = $destDir . '/' . strtolower($module) . '_' . microtime(true). '.json';
 

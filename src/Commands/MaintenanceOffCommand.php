@@ -11,15 +11,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Toothpaste\Sugar;
 
-class TeamSetCleanupCommand extends Command
+class MaintenanceOffCommand extends Command
 {
-    protected static $defaultName = 'local:teams:clean';
+    protected static $defaultName = 'local:maintenance:off';
 
     protected function configure()
     {
         $this
-            ->setDescription('Clean up TeamSets')
-            ->setHelp('Clean up TeamSets')
+            ->setDescription('Set Maintenance mode off')
+            ->setHelp('This command helps you unset maintenance mode Sugar instance')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
         ;
     }
@@ -28,7 +28,7 @@ class TeamSetCleanupCommand extends Command
     {
         \Toothpaste\Toothpaste::resetStartTime();
 
-        $output->writeln('Executing clean up of TeamSets...');
+        $output->writeln('Setting maintenance mode off...');
 
         $instance = $input->getOption('instance');
         if (empty($instance)) {
@@ -40,9 +40,9 @@ class TeamSetCleanupCommand extends Command
                 $output->writeln('Entering ' . $path . '...');
                 $output->writeln('Setting up instance...');
                 Sugar\Instance::setup();
-                $logic = new Sugar\Logic\TeamSetsCleanup();
+                $logic = new Sugar\Logic\MaintenanceMode();
                 $logic->setLogger($output);
-                $logic->performFullCleanup();
+                $logic->changeMaintenanceSetting(false);
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
             }

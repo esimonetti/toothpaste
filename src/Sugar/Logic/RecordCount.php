@@ -3,11 +3,11 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar\Actions;
+namespace Toothpaste\Sugar\Logic;
 use Toothpaste\Sugar\Instance;
 use Toothpaste\Sugar;
 
-class RecordCount extends Sugar\BaseAction
+class RecordCount extends Sugar\BaseLogic
 {
     public function count()
     {

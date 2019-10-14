@@ -3,11 +3,11 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-namespace Toothpaste\Sugar\Actions;
+namespace Toothpaste\Sugar\Logic;
 use Toothpaste\Sugar\Instance;
 use Toothpaste\Sugar;
 
-class MySQLOptimize extends Sugar\MySQLBaseAction
+class MySQLOptimize extends MySQLBaseLogic
 {
     public function executeTablesOptimize()
     {
