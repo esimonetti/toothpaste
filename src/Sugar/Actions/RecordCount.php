@@ -16,6 +16,8 @@ class RecordCount extends Sugar\BaseAction
         $db = \DBManagerFactory::getInstance();
         $tables = $db->getTablesArray();
         asort($tables);
+        $this->writeln('Showing database tables with at least one record below:');
+        $this->writeln('');
         foreach ($tables as $table) {
             $columns = $db->get_columns($table);
             if ($key = array_search('id', array_column($columns, 'name'))) {
@@ -46,11 +48,7 @@ class RecordCount extends Sugar\BaseAction
         $this->writeln('The database has in total ' . $total . ' records');
         $this->writeln('');
 
-        //$this->writeln('JSON output:');
-        //$this->writeln(json_encode($results));
-        //$this->writeln(PHP_EOL);
-
-        $this->writeln('CSV output:' . PHP_EOL);
+        $this->writeln('All tables CSV output:' . PHP_EOL);
         $this->writeln('"table","count"');
         foreach ($results as $table => $count) {
             $this->writeln('"' . $table . '","' . $count . '"');

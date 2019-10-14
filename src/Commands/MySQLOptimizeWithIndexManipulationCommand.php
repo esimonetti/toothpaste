@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class MySQLOptimizeWithIndexManipulationCommand extends Command
 {
-    protected static $defaultName = 'sugar:mysql:optimizewithindex';
+    protected static $defaultName = 'local:mysql:optimize-with-indexes-manipulations';
 
     protected function configure()
     {

@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class TeamSetCleanupCommand extends Command
 {
-    protected static $defaultName = 'sugar:teamset:clean';
+    protected static $defaultName = 'local:teams:clean';
 
     protected function configure()
     {

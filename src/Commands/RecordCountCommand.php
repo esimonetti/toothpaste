@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class RecordCountCommand extends Command
 {
-    protected static $defaultName = 'sugar:count';
+    protected static $defaultName = 'local:records:count';
 
     protected function configure()
     {
@@ -28,7 +28,7 @@ class RecordCountCommand extends Command
     {
         \Toothpaste\Toothpaste::resetStartTime();
 
-        $output->writeln('Executing count of database records across all tables...');
+        $output->writeln('Executing count of database records (containing also soft deleted) across all tables...');
 
         $instance = $input->getOption('instance');
         if (empty($instance)) {

@@ -7,14 +7,8 @@ namespace Toothpaste\Sugar\Actions;
 use Toothpaste\Sugar\Instance;
 use Toothpaste\Sugar;
 
-class MySQLOptimize extends Sugar\BaseAction
+class MySQLOptimize extends Sugar\MySQLBaseAction
 {
-    protected function isMySQL()
-    {
-        $db = \DBManagerFactory::getInstance();
-        return ($db->dbType === 'mysql') ? true : false;
-    }
-    
     public function executeTablesOptimize()
     {
         if ($this->isMySQL()) {

@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class RepairCommand extends Command
 {
-    protected static $defaultName = 'sugar:repair';
+    protected static $defaultName = 'local:system:repair';
 
     protected function configure()
     {

@@ -8,9 +8,7 @@ use Toothpaste\Sugar;
 
 class MassRetrieverApi extends Sugar\Rest
 {
-    protected $page;
-
-    public $maxSleepTimeUs = 0;//5000000;
+    public $maxSleepTimeUs = 0; // 5000000 is 5 seconds, for now set to 0 to not have delays;
 
     protected function delay()
     {

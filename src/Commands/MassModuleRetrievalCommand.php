@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class MassModuleRetrievalCommand extends Command
 {
-    protected static $defaultName = 'sugar:massretrieve';
+    protected static $defaultName = 'remote:records:massretrieve';
 
     protected function configure()
     {

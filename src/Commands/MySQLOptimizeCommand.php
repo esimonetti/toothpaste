@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class MySQLOptimizeCommand extends Command
 {
-    protected static $defaultName = 'sugar:mysql:optimize';
+    protected static $defaultName = 'local:mysql:optimize';
 
     protected function configure()
     {
