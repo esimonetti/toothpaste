@@ -21,6 +21,7 @@ class GenerateMetadataCommand extends Command
             ->setDescription('Remove and generate metadata cache for all users/roles combinations')
             ->setHelp('This command helps remove and generate metadata cache for all users/roles combinations')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
+            ->addOption('mac', null, InputOption::VALUE_NONE, 'Flag to generate metadata on behalf of a browser on a Mac platform')
         ;
     }
 
@@ -31,6 +32,7 @@ class GenerateMetadataCommand extends Command
         $output->writeln('Executing generate metadata command...');
 
         $instance = $input->getOption('instance');
+        $isForMac = $input->getOption('mac');
         if (empty($instance)) {
             $output->writeln('Please provide the instance path. Check with --help for the correct syntax');
         } else {
@@ -42,7 +44,7 @@ class GenerateMetadataCommand extends Command
                 Sugar\Instance::setup();
                 $logic = new Sugar\Logic\Metadata();
                 $logic->setLogger($output);
-                $logic->generate();
+                $logic->generate($isForMac);
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
             }

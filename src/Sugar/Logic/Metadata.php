@@ -87,7 +87,7 @@ class Metadata extends Sugar\BaseLogic
         return $contexts;
     }
 
-    public function generate()
+    public function generate($isForMac = false)
     {
         global $current_user;
 
@@ -102,17 +102,33 @@ class Metadata extends Sugar\BaseLogic
         // it is due to what "browser" the repair functionality thinks is running it, with the utils function get_alt_hot_key
         // eg: linux on cli vs mac on the browser
 
+        // mac handles differently hotkeys that might change the metadata content
+        if ($isForMac) {
+            $this->writeln('Generating metadata on behalf of a browser on a Mac platform (different hotkeys)');
+            $_SERVER['HTTP_USER_AGENT'] = 'mac';
+        } else {
+            // forcefully set to linux
+            $_SERVER['HTTP_USER_AGENT'] = 'linux';
+            $this->writeln('Generating metadata on behalf of a browser NOT on a Mac platform (different hotkeys). To generate the metadata for a browser on a Mac platform, pass to this command the additional option --mac');
+        }
+
         global $current_language;
 
         Instance::basicWarmUp();
-        \MetaDataManager::setupMetadata(['base'], [$current_language]);
+
+        // setup base metadata json files for every language
+        $mm = new \MetadataManager();
+        $languages = $mm->getAllLanguages();
+        \MetaDataManager::setupMetadata(['base'], $languages['enabled']);
+        //\MetaDataManager::setupMetadata(['base'], [$current_language]);
+        // setup public language ordered
+        $mm->getLanguage(['ordered' => true, 'lang' => $current_language]);
 
         if (!$this->detectKnownCustomisationsConflicts()) {
             $contexts = $this->getUniqueMetadataCombinations();
             if (!empty($contexts)) {
                 // build only one metadata per hash, not for every user
                 $this->writeln('Rebuilding users/roles metadata combinations');
-                $mm = new \MetadataManager();
                 foreach ($contexts as $content) {
                     if (!empty($content['user_id'])) {
                         $user = \BeanFactory::getBean('Users', $content['user_id']);
@@ -122,7 +138,7 @@ class Metadata extends Sugar\BaseLogic
                     }
                 }
                 $this->writeln('');
-                $this->writeln('Generated successfuly ' . count($contexts) . ' unique users/roles metadata combinations');
+                $this->writeln('Generated successfully ' . count($contexts) . ' unique users/roles metadata combinations');
             }
         } else {
             $this->writeln('The metadata generation has not been processed due to a known customisation conflict');

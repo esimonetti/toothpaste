@@ -11,7 +11,7 @@ This tool allows the execution of various CLI actions including repair, useful o
 * Composer
 
 ## Installation
-Within your installation director (eg: `~/toothpaste`), run the following:
+Within your installation directory (eg: `~/toothpaste`), run the following:
 ```
 composer require esimonetti/toothpaste
 ```
