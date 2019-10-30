@@ -19,7 +19,7 @@ class Instance
         return false;
     }
 
-    public static function setup()
+    public static function setup($loadUser = true)
     {
         define('sugarEntry', true);
 
@@ -45,6 +45,13 @@ class Instance
         $GLOBALS['app_strings'] = return_application_language($GLOBALS['current_language']);
         $GLOBALS['mod_strings'] = return_module_language($GLOBALS['current_language'], 'Administration');
 
+        if ($loadUser) {
+            self::loadSystemUser();
+        }
+    }
+
+    public static function loadSystemUser()
+    {
         $u = \BeanFactory::newBean('Users');
         $GLOBALS['current_user'] = $u->getSystemUser();
     }

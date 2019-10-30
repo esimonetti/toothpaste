@@ -34,6 +34,8 @@ $application->add(new \Toothpaste\Commands\GenerateMetadataCommand());
 $application->add(new \Toothpaste\Commands\ExtractMetadataCommand());
 $application->add(new \Toothpaste\Commands\MaintenanceOnCommand());
 $application->add(new \Toothpaste\Commands\MaintenanceOffCommand());
+$application->add(new \Toothpaste\Commands\RepairMissingTablesCommand());
+$application->add(new \Toothpaste\Commands\FileSystemBenchmarkCommand());
 
 $application->run();
 

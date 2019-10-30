@@ -11,8 +11,6 @@ class Repair extends Sugar\BaseLogic
 {
     protected function simpleRepair()
     {
-        //require_once('modules/Administration/QuickRepairAndRebuild.php');
-
         // repair
         $repair = new \RepairAndClear();
         $repair->repairAndClearAll(['clearAll'], [$mod_strings['LBL_ALL_MODULES']], true, false, '');
