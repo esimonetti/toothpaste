@@ -13,13 +13,13 @@ use Toothpaste\Sugar;
 
 class MassModuleRetrievalCommand extends Command
 {
-    protected static $defaultName = 'remote:records:massretrieve';
+    protected static $defaultName = 'remote:data:massretrieve';
 
     protected function configure()
     {
         $this
-            ->setDescription('Mass module retrieval')
-            ->setHelp('Retrive all records of a module')
+            ->setDescription('Mass module retrieval from a remote Sugar instance via API, into JSON files for later processing')
+            ->setHelp('Command to help retrive all records of a module from a remote Sugar instance via API, into JSON files for later processing')
             ->addOption('url', null, InputOption::VALUE_REQUIRED, 'Base instance url')
             ->addOption('user', null, InputOption::VALUE_REQUIRED, 'Username')
             ->addOption('pass', null, InputOption::VALUE_REQUIRED, 'Password')

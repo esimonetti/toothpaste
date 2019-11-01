@@ -11,16 +11,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Toothpaste\Sugar;
 
-class TeamSetCleanupCommand extends Command
+class SugarBPMFlowCleanupCommand extends Command
 {
-    protected static $defaultName = 'local:data:clean:teams';
+    protected static $defaultName = 'local:data:clean:sugarbpm';
 
     protected function configure()
     {
         $this
-            ->setDescription('Clean up TeamSets')
-            ->setHelp('Clean up TeamSets')
+            ->setDescription('Delete from the database old completed and terminated SugarBPM flow records')
+            ->setHelp('Command to delete from the database old completed and terminated SugarBPM flow records')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
+            ->addOption('months', null, InputOption::VALUE_OPTIONAL, 'Number of months to keep completed and terminated records for. Older records will be deleted from the system', 3)
             ->addOption('yes-hard-delete-live-data', null, InputOption::VALUE_NONE, 'Flag to consent to hard delete live system data without a backup')
         ;
     }
@@ -29,8 +30,9 @@ class TeamSetCleanupCommand extends Command
     {
         \Toothpaste\Toothpaste::resetStartTime();
 
-        $output->writeln('Executing clean up of TeamSets...');
+        $output->writeln('Executing database delete of old SugarBPM flow records...');
 
+        $monthsToKeep = $input->getOption('months');
         $instance = $input->getOption('instance');
         $consentToDelete = $input->getOption('yes-hard-delete-live-data');
         if (empty($consentToDelete)) {
@@ -45,9 +47,9 @@ class TeamSetCleanupCommand extends Command
                     $output->writeln('Entering ' . $path . '...');
                     $output->writeln('Setting up instance...');
                     Sugar\Instance::setup();
-                    $logic = new Sugar\Logic\TeamSetsCleanup();
+                    $logic = new Sugar\Logic\SugarBPMCleanup();
                     $logic->setLogger($output);
-                    $logic->performFullCleanup();
+                    $logic->delete($months);
                 } else {
                     $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
                 }

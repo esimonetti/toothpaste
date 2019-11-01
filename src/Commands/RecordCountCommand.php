@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class RecordCountCommand extends Command
 {
-    protected static $defaultName = 'local:records:count';
+    protected static $defaultName = 'local:data:count';
 
     protected function configure()
     {
