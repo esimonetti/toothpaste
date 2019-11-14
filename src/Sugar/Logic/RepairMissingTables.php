@@ -12,7 +12,7 @@ class RepairMissingTables extends Sugar\BaseLogic
     {
         $this->writeln('Retrieving all system\'s SQL tables dictionaries');
         // retrieve all dictionaries for later use
-        $dictionaries = array_merge(glob('metadata/*.php'), glob('modules/*/vardefs.php'));
+        $dictionaries = array_merge($this->findFiles('metadata', ['/*.php/']), $this->findFiles('modules', ['/vardefs.php/']));
         if (!empty($dictionaries)) {
             foreach ($dictionaries as $dictionaryFile) {
                 require($dictionaryFile);
@@ -43,7 +43,7 @@ class RepairMissingTables extends Sugar\BaseLogic
         asort($fullModuleList);
         foreach ($fullModuleList as $module => $label) {
             $bean = \BeanFactory::newBean($module);
-            if ($bean instanceof SugarBean) {
+            if ($bean instanceof \SugarBean) {
                 $table = $bean->getTableName();
                 if (!empty($table) && !$db->tableExists($table)) {
                     // execute creation

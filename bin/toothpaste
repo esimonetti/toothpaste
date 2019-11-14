@@ -38,6 +38,8 @@ $application->add(new \Toothpaste\Commands\RepairMissingTablesCommand());
 $application->add(new \Toothpaste\Commands\FileSystemBenchmarkCommand());
 $application->add(new \Toothpaste\Commands\SugarBPMFlowCleanupCommand());
 $application->add(new \Toothpaste\Commands\CustomTableOrphansCleanupCommand());
+$application->add(new \Toothpaste\Commands\RBVUsageCommand());
+$application->add(new \Toothpaste\Commands\LogicHooksUsageCommand());
 
 $application->run();
 
