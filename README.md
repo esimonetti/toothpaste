@@ -7,6 +7,7 @@ Utility to keep your Sugar system clean via CLI. As it is a CLI only tool, it ca
 This tool allows the execution of various CLI actions including repair, useful ongoing maintenance, identification of possible problems and extracting data from a Sugar installation.
 
 ## Requirements
+* Linux
 * PHP >= 7.1
 * Composer
 
@@ -17,6 +18,22 @@ composer require esimonetti/toothpaste
 ```
 Composer will download toothpaste and all its dependencies, so that you are ready to go.<br />
 To be able to execute local commands, toothpaste has to be able to access a local Sugar installation, be on the same server, and with php CLI available.
+
+### Installation on SugarDockerized
+As there were some problems running the installation commands from outside the containers, the following installation steps will enter the `sugar-cron` container to perform the installation.
+```
+docker exec sugar-cron -it bash
+mkdir ../toothpaste
+cd ../toothpaste
+composer require esimonetti/toothpaste
+exit
+```
+
+### Running toothpaste on SugarDockerized
+To execute toothpaste, leverage the bash scripts provided with SugarDockerized
+```
+./utilities/runcli.sh "cd ../toothpaste && ./vendor/bin/toothpaste list"
+```
 
 ## Sample uses
 ### List
@@ -30,7 +47,7 @@ To repair a system (located in `/var/www/html/sugar`), run the following:
 ./vendor/bin/toothpaste local:system:repair --instance /var/www/html/sugar
 ```
 ```
-Toothpaste v0.0.5
+Toothpaste vX.X.X
 Executing Repair command...
 Entering /var/www/html/sugar...
 Setting up instance...
@@ -45,7 +62,7 @@ To set maintenance mode on/off for a system (located in `/var/www/html/sugar`), 
 ./vendor/bin/toothpaste local:maintenance:on --instance /var/www/html/sugar
 ```
 ```
-Toothpaste v0.0.5
+Toothpaste vX.X.X
 Setting maintenance mode on...
 Entering /var/www/html/sugar...
 Setting up instance...
@@ -57,7 +74,7 @@ Execution completed in 0.19 seconds.
 ./vendor/bin/toothpaste local:maintenance:off --instance /var/www/html/sugar
 ```
 ```
-Toothpaste v0.0.5
+Toothpaste vX.X.X
 Setting maintenance mode off...
 Entering /var/www/html/sugar...
 Setting up instance...
