@@ -11,15 +11,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Toothpaste\Sugar;
 
-class FileSystemBenchmarkCommand extends Command
+class SugarBPMAnalysisCommand extends Command
 {
-    protected static $defaultName = 'local:analysis:fsbenchmark';
+    protected static $defaultName = 'local:analysis:sugarbpm';
 
     protected function configure()
     {
         $this
-            ->setDescription('Perform a benchmark on the file system')
-            ->setHelp('Command to perform a file system benchmark via PHP, to assess the range of performance of PHP on a file system')
+            ->setDescription('Perform an analysis of SugarBPM records')
+            ->setHelp('Command to perform an analysis of SugarBPM records to understand distribution, timing, usage etc.')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
         ;
     }
@@ -28,7 +28,7 @@ class FileSystemBenchmarkCommand extends Command
     {
         \Toothpaste\Toothpaste::resetStartTime();
 
-        $output->writeln('Executing benchmark on the file system...');
+        $output->writeln('Executing analysis of SugarBPM records...');
 
         $instance = $input->getOption('instance');
         if (empty($instance)) {
@@ -38,9 +38,11 @@ class FileSystemBenchmarkCommand extends Command
 
             if (!empty($path)) {
                 $output->writeln('Entering ' . $path . '...');
-                $logic = new Sugar\Logic\FileSystemBenchmark();
+                $output->writeln('Setting up instance...');
+                Sugar\Instance::setup();
+                $logic = new Sugar\Logic\SugarBPMAnalysis();
                 $logic->setLogger($output);
-                $logic->performFileSystemBenchmark();
+                $logic->performAnalysis();
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
             }

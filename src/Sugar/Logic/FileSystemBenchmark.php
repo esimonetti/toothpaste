@@ -84,11 +84,6 @@ class FileSystemBenchmark extends Sugar\BaseLogic
         return $res;
     }
 
-    protected function formatNumber(float $number, ?int $decimals = 2) : string
-    {
-        return number_format($number, $decimals, '.', ',');
-    }
-
     protected function getStaticFileContent() : string
     {
         $fileContent =

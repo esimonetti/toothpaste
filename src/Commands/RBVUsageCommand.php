@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class RBVUsageCommand extends Command
 {
-    protected static $defaultName = 'local:system:rbv';
+    protected static $defaultName = 'local:analysis:rbv';
 
     protected function configure()
     {

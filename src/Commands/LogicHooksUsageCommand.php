@@ -13,7 +13,7 @@ use Toothpaste\Sugar;
 
 class LogicHooksUsageCommand extends Command
 {
-    protected static $defaultName = 'local:system:logichooks';
+    protected static $defaultName = 'local:analysis:logichooks';
 
     protected function configure()
     {

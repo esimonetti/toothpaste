@@ -42,6 +42,11 @@ class BaseLogic
         }
     }
 
+    protected function formatNumber(float $number, ?int $decimals = 2) : string
+    {
+        return number_format($number, $decimals, '.', ',');
+    }
+
     protected function matchesAllPatterns(String $string, array $patternsToMatch = [], array $patternsToIgnore = []) : bool
     {
         // if it does not match any of the required patterns, return false
