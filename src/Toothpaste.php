@@ -7,7 +7,7 @@ namespace Toothpaste;
 
 class Toothpaste
 {
-    const SW_VERSION = '0.1.0';
+    const SW_VERSION = '0.1.1';
     const SW_NAME = 'Toothpaste';
 
     protected static $startTime;

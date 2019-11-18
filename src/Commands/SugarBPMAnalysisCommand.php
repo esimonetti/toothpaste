@@ -21,6 +21,7 @@ class SugarBPMAnalysisCommand extends Command
             ->setDescription('Perform an analysis of SugarBPM records')
             ->setHelp('Command to perform an analysis of SugarBPM records to understand distribution, timing, usage etc.')
             ->addOption('instance', null, InputOption::VALUE_REQUIRED, 'Instance relative or absolute path')
+            ->addOption('all', null, InputOption::VALUE_NONE, 'Output on screen all data available')
         ;
     }
 
@@ -30,6 +31,7 @@ class SugarBPMAnalysisCommand extends Command
 
         $output->writeln('Executing analysis of SugarBPM records...');
 
+        $outputAll = $input->getOption('all');
         $instance = $input->getOption('instance');
         if (empty($instance)) {
             $output->writeln('Please provide the instance path. Check with --help for the correct syntax');
@@ -42,7 +44,7 @@ class SugarBPMAnalysisCommand extends Command
                 Sugar\Instance::setup();
                 $logic = new Sugar\Logic\SugarBPMAnalysis();
                 $logic->setLogger($output);
-                $logic->performAnalysis();
+                $logic->performAnalysis($outputAll);
             } else {
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
             }

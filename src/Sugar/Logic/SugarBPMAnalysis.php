@@ -22,16 +22,40 @@ class SugarBPMAnalysis extends MySQLBaseLogic
         return $this->conn;
     }
 
-    public function performAnalysis()
+    public function performAnalysis(Bool $outputAll = false)
     {
         $this->writeln('Performing analysis of SugarBPM usage');
 
+        $this->analysisEnabledSugarBPMS();
         $this->analysisRecordGrowth();
         $this->analysisRecordGrowthPerProcess();
-        $this->analysisRecordsPerModulesRecord();
+        $this->analysisRecordsPerModulesRecord($outputAll);
         $this->analysisRecordGrowthPerProcessPerMonth();
 
         $this->writeln('Analysis of SugarBPM usage completed');
+    }
+
+    protected function analysisEnabledSugarBPMS()
+    {
+        if ($this->isMySQL()) {
+            $this->getConn();
+
+            $this->writeln('');
+            $this->write('Retrieving information currently active SugarBPMs, please wait... ');
+            $query = "select count(id) as count, prj_module as module from pmse_project where prj_status = ? group by prj_module order by count(id) desc";
+            $stmt = $this->conn->executeQuery($query, ['ACTIVE']);
+            $this->writeln('done.');
+            $this->writeln('');
+            $this->writeln('The list of active SugarBPMs can be found below:');
+            while ($row = $stmt->fetch()) {
+                $this->writeln('Module: ' . $row['module']);
+                $this->writeln('Number of Active SugarBPMs: ' . $this->formatNumber($row['count'], 0));
+            }
+            $this->writeln('');
+            $this->writeln('');
+        } else {
+            // TODO
+        }
     }
 
     protected function analysisRecordGrowth()
@@ -71,22 +95,19 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             // calculate biggest swing
 
             if (!empty($allValues)) {
-                if ($highestValues == $lowestValues) {
-                    // TODO
-                    // only one sample? bad data?
-                } else {
+                if ($highestValues !== $lowestValues) {
                     // tell me something smart
-                    $this->writeln('Average entries: ' . $averageValue . ' across ' . count($allValues) . ' months');
-                    $this->writeln('Min: ' . $lowestValues['entries'] . ' entries for the month of: ' . $lowestValues['month'] . ' with a change from the average of ' . 
+                    $this->writeln('Average entries: ' . $averageValue . '; Time span: ' . count($allValues) . ' months');
+                    $this->writeln('Min: ' . $this->formatNumber($lowestValues['entries'], 0) . ' entries for the month of: ' . $lowestValues['month'] . ' with a change from the average of ' . 
                         $this->formatNumber((abs($lowestValues['entries'] - $averageValue)) / ($averageValue / 100)) . '%');
-                    $this->writeln('Max: ' . $highestValues['entries'] . ' entries for the month of: ' . $highestValues['month'] . ' with a change from the average of ' .
+                    $this->writeln('Max: ' . $this->formatNumber($highestValues['entries'], 0) . ' entries for the month of: ' . $highestValues['month'] . ' with a change from the average of ' .
                         $this->formatNumber((abs($highestValues['entries'] - $averageValue)) / ($averageValue / 100)) . '%');
                 }
 
                 $this->writeln('');
                 $this->writeln('The list of all the entries by month can be found below:');
                 foreach ($allValues as $value) {
-                    $this->writeln('Month: ' . $value['month'] . ' Entries: ' . $value['entries']);
+                    $this->writeln('Month: ' . $value['month'] . '; Entries: ' . $this->formatNumber($value['entries'], 0));
                 }
                 $this->writeln('');
                 $this->writeln('');
@@ -110,7 +131,7 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             $stmt = $this->conn->executeQuery($query, [$id]);
 
             if ($row = $stmt->fetch()) {
-                $this->processes[$id] = $row['name'] . ' - ' . $row['status'] . ' Module: ' . $row['module'] . ' (Process id: ' . $row['id'] . ')';
+                $this->processes[$id] = $row['name'] . '; Status: ' . $row['status'] . '; Module: ' . $row['module'] . '; Process id: ' . $row['id'] . '';
             }
 
             return $this->processes[$id];
@@ -139,13 +160,11 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             }
 
             if (!empty($allValues)) {
-                $this->writeln('');
                 $this->writeln('The list of all the entries can be found below:');
 
                 foreach ($allValues as $value) {
                     // initialise for totals
                     if (empty($totalProcesses[$value['process']])) {
-                        // how can i output the previous value?
                         $totalProcesses[$value['process']] = $value['entries'];
                     } else {
                         $totalProcesses[$value['process']] += $value['entries'];
@@ -153,7 +172,7 @@ class SugarBPMAnalysis extends MySQLBaseLogic
                 }
 
                 foreach ($allValues as $value) {
-                    $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($value['process']) . ' Status: ' . $value['status']  . ' Entries: ' . $value['entries'] . ' / total ' . $totalProcesses[$value['process']]);
+                    $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($value['process']) . '; Status: ' . $value['status']  . '; Entries: ' . $this->formatNumber($value['entries'], 0) . ' / total ' . $this->formatNumber($totalProcesses[$value['process']], 0));
                 }
 
                 $this->writeln('');
@@ -164,12 +183,12 @@ class SugarBPMAnalysis extends MySQLBaseLogic
         }
     }
 
-    protected function analysisRecordsPerModulesRecord()
+    protected function analysisRecordsPerModulesRecord(Bool $outputAll = false)
     {
         if ($this->isMySQL()) {
             $this->getConn();
             $allValues = [];
-            $totalProcesses = [];
+            $statsData = [];
 
             $this->writeln('');
             $this->write('Retrieving information about SugarBPM records per Sugar record entry, please wait... ');
@@ -180,17 +199,56 @@ class SugarBPMAnalysis extends MySQLBaseLogic
 
             while ($row = $stmt->fetch()) {
                 $allValues[] = $row;
+
+                // get some summary info per module
+                if (empty($statsData[$row['module']])) {
+                    $statsData[$row['module']] = [
+                        'max' => 0,
+                        'min' => 0,
+                        'total' => 0,
+                        'entries' => 0,
+                        'avg' => 0,
+                        'maxSampleEntry' => '',
+                        'minSampleEntry' => '',
+                    ];
+                }
+
+                $statsData[$row['module']]['entries']++;
+                $statsData[$row['module']]['total'] += $row['entries'];
+                $statsData[$row['module']]['avg'] = $statsData[$row['module']]['total'] / $statsData[$row['module']]['entries'];
+
+                // new minimum
+                if (empty($statsData[$row['module']]['min']) || $row['entries'] < $statsData[$row['module']]['min']) {
+                    $statsData[$row['module']]['min'] = $row['entries'];
+                    $statsData[$row['module']]['minSampleEntry'] = $row['record_id'];
+                }
+
+                // new maximum
+                if ($row['entries'] > $statsData[$row['module']]['max']) {
+                    $statsData[$row['module']]['max'] = $row['entries'];
+                    $statsData[$row['module']]['maxSampleEntry'] = $row['record_id'];
+                }
             }
 
             if (!empty($allValues)) {
-                $this->writeln('');
-                $this->writeln('The list of all the entries can be found below:');
 
-                foreach ($allValues as $value) {
-                    $this->writeln('Entries: ' . $value['entries'] . ' Module: ' . $value['module'] . ' Record id: ' . $value['record_id']);
+                if ($outputAll) {
+                    $this->writeln('The list of all the entries can be found below:');
+                    foreach ($allValues as $value) {
+                        $this->writeln('Entries: ' . $this->formatNumber($value['entries'], 0) . '; Module: ' . $value['module'] . '; Record id: ' . $value['record_id']);
+                    }
+                    $this->writeln('');
                 }
 
-                // TODO we should calculate average per module and outliers per module if any
+                $this->writeln('The summary of entries on a per-module basis can be found below:');
+                foreach ($statsData as $module => $content) {
+                    $this->writeln('');
+                    $this->writeln($module . ':');
+                    $this->writeln('Min: ' . $this->formatNumber($content['min'], 0) . '; Max: ' . $this->formatNumber($content['max'], 0) . '; Average: ' . $this->formatNumber($content['avg'], 2) .
+                        '; Total: ' . $this->formatNumber($content['total'], 0) . '; Entries: ' . $this->formatNumber($content['entries'], 0));
+                    $this->writeln('Sample Min ' . $module  . ' record id: ' . $content['minSampleEntry']);
+                    $this->writeln('Sample Max ' . $module  . ' record id: ' . $content['maxSampleEntry']);
+                }
 
                 $this->writeln('');
                 $this->writeln('');
@@ -214,11 +272,10 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             $this->writeln('done.');
             $this->writeln('');
 
-            $this->writeln('');
             $this->writeln('The list of all the entries by month can be found below:');
 
             while ($row = $stmt->fetch()) {
-                $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($row['process']) . ' Month: ' . $row['month'] . ' Entries: ' . $row['entries']);
+                $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($row['process']) . '; Month: ' . $row['month'] . '; Entries: ' . $this->formatNumber($row['entries'], 0));
             }
 
             $this->writeln('');

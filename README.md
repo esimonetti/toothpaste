@@ -10,6 +10,7 @@ This tool allows the execution of various CLI actions including repair, useful o
 * Linux
 * PHP >= 7.1
 * Composer
+* Some commands only run with MySQL at this stage
 
 ## Installation
 Within your installation directory (eg: `~/toothpaste`), run the following:
@@ -22,7 +23,7 @@ To be able to execute local commands, toothpaste has to be able to access a loca
 ### Installation on SugarDockerized
 As there were some problems running the installation commands from outside the containers, the following installation steps will enter the `sugar-cron` container to perform the installation.
 ```
-docker exec sugar-cron -it bash
+docker exec -it sugar-cron bash
 mkdir ../toothpaste
 cd ../toothpaste
 composer require esimonetti/toothpaste
