@@ -32,7 +32,7 @@ class SugarBPMFlowCleanupCommand extends Command
 
         $output->writeln('Executing database delete of old SugarBPM flow records...');
 
-        $monthsToKeep = $input->getOption('months');
+        $months = $input->getOption('months');
         $instance = $input->getOption('instance');
         $consentToDelete = $input->getOption('yes-hard-delete-live-data');
         if (empty($consentToDelete)) {
