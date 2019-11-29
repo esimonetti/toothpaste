@@ -1,5 +1,4 @@
 /vendor/
 composer.lock
 src/Toothpaste.php.original
-phar/extracted
-phar/extract.php
+/phar/

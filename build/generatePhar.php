@@ -17,6 +17,6 @@ $phar = new Phar($buildRoot . '/' . $fileName, 0, $fileName);
 Phar::interceptFileFuncs();
 //$phar->buildFromDirectory($tmpDir . '/vendor', '/\.php$/');
 $phar->buildFromDirectory($tmpDir . '/vendor');
-$phar->setStub($phar->createDefaultStub('bin/toothpaste.php'));
+$phar->setStub($phar->createDefaultStub('esimonetti/toothpaste/bin/toothpaste.php'));
 
 exec('cd .. && rm -rf ' . $tmpDir);
