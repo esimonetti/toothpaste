@@ -14,9 +14,11 @@ exec('composer -n require esimonetti/toothpaste *');
 $buildRoot = dirname(__FILE__) . '/../phar/';
 $fileName = 'toothpaste.phar';
 $phar = new Phar($buildRoot . '/' . $fileName, 0, $fileName);
-Phar::interceptFileFuncs();
-//$phar->buildFromDirectory($tmpDir . '/vendor', '/\.php$/');
 $phar->buildFromDirectory($tmpDir . '/vendor');
-$phar->setStub($phar->createDefaultStub('esimonetti/toothpaste/bin/toothpaste.php'));
+$phar->setStub("<?php
+Phar::mapPhar();
+set_include_path(get_include_path() . PATH_SEPARATOR . 'phar://' . __FILE__);
+require_once 'esimonetti/toothpaste/bin/toothpaste.php'; __HALT_COMPILER();
+");
 
 exec('cd .. && rm -rf ' . $tmpDir);
