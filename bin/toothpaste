@@ -4,4 +4,4 @@
 // Enrico Simonetti
 // enricosimonetti.com
 
-dirname(__FILE__) . '/toothpaste.php';
+include dirname(__FILE__) . '/toothpaste.php';

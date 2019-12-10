@@ -40,6 +40,7 @@ $application->add(new \Toothpaste\Commands\CustomTableOrphansCleanupCommand());
 $application->add(new \Toothpaste\Commands\RBVUsageCommand());
 $application->add(new \Toothpaste\Commands\LogicHooksUsageCommand());
 $application->add(new \Toothpaste\Commands\SugarBPMAnalysisCommand());
+$application->add(new \Toothpaste\Commands\RestoreRecordCommand());
 
 $application->run();
 
