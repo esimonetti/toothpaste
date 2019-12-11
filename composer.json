@@ -1,6 +1,6 @@
 {
     "name": "esimonetti/toothpaste",
-    "description": "Utility to uncover possible problems with an installed Sugar system via CLI",
+    "description": "CLI utility to analyse, optimise and provide additional functionality to your Sugar system",
     "type": "package",
     "license": "Apache-2.0",
     "authors": [

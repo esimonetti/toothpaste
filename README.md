@@ -3,7 +3,7 @@
 *This tool is provided AS-IS and might have bugs. Please help create and provide bug fixes!*
 
 ## Description
-Utility to keep your Sugar system clean via CLI. As it is a CLI only tool, it cannot execute from within Sugar Cloud.<br />
+CLI utility to analyse, optimise and provide additional functionality to your Sugar system. As it is a CLI only tool, it cannot execute from within Sugar Cloud.<br />
 This tool allows the execution of various CLI actions including repair, useful ongoing maintenance, identification of possible problems and extracting data from a Sugar installation.
 
 ## Requirements
