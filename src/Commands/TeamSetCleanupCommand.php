@@ -39,7 +39,7 @@ class TeamSetCleanupCommand extends Command
             if (empty($instance)) {
                 $output->writeln('Please provide the instance path. Check with --help for the correct syntax');
             } else {
-                $path = Sugar\Instance::validate($instance);
+                $path = Sugar\Instance::validate($instance, $output);
 
                 if (!empty($path)) {
                     $output->writeln('Entering ' . $path . '...');

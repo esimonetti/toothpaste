@@ -7,13 +7,54 @@ namespace Toothpaste\Sugar;
 
 class Instance
 {
-    public static function validate($path)
+    protected static $filesToExist = [
+        '.htaccess',
+        'index.php',
+        'config.php',
+        'sugar_version.php',
+        'include/entryPoint.php',
+        'data/SugarBean.php',
+    ];
+
+    protected static $dirToExist = [
+        'cache',
+        'include',
+        'modules',
+        'vendor',
+        'custom',
+        'data',
+        'api',
+        'ModuleInstall',
+        'metadata',
+        'jssource',
+        'clients',
+        'sidecar',
+    ];
+
+    public static function validate($path, $output = null)
     {
         if (!empty($path) && is_dir($path)) {
             chdir($path);
-            if (file_exists('config.php') && file_exists('sugar_version.php') && file_exists('include/entryPoint.php')) {
-                return $path;
+            foreach (self::$dirToExist as $dir) {
+                if (!is_dir($dir) || !is_readable($dir) || !is_writable($dir)) {
+                    if (is_object($output)) {
+                        $output->writeln('Sugar\'s directory ' . $dir . ' either does not exist, it is not readable or it is not writable. ' .
+                            'The instance located on ' . $path . ' is invalid');
+                    }
+                    return false;
+                }
             }
+
+            foreach (self::$filesToExist as $file) {
+                if (!file_exists($file) || !is_readable($file)) {
+                    if (is_object($output)) {
+                        $output->writeln('Sugar\'s file ' . $file . ' either does not exist or it is not readable. ' .
+                            'The instance located on ' . $path . ' is invalid');
+                    }
+                    return false;
+                }
+            }
+            return $path;
         }
 
         return false;

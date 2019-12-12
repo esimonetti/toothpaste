@@ -39,7 +39,7 @@ class ExtractMetadataCommand extends Command
             if (empty($dir)) {
                 $output->writeln('Please make sure all required parameters are passed correctly to the command. Check with --help for the correct syntax');
             } else {
-                $path = Sugar\Instance::validate($instance);
+                $path = Sugar\Instance::validate($instance, $output);
 
                 if (!empty($path)) {
                     $output->writeln('Entering ' . $path . '...');

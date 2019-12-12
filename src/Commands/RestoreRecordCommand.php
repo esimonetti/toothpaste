@@ -38,7 +38,7 @@ class RestoreRecordCommand extends Command
         if (empty($instance)) {
             $output->writeln('Please provide the instance path. Check with --help for the correct syntax');
         } else {
-            $path = Sugar\Instance::validate($instance);
+            $path = Sugar\Instance::validate($instance, $output);
 
             if (!empty($path)) {
                 if (!empty($module) && !empty($record)) {
