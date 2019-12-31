@@ -97,7 +97,7 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             if (!empty($allValues)) {
                 if ($highestValues !== $lowestValues) {
                     // tell me something smart
-                    $this->writeln('Average entries: ' . $averageValue . '; Time span: ' . count($allValues) . ' months');
+                    $this->writeln('Average entries: ' . $this->formatNumber($averageValue, 0) . '; Time span: ' . count($allValues) . ' months');
                     $this->writeln('Min: ' . $this->formatNumber($lowestValues['entries'], 0) . ' entries for the month of: ' . $lowestValues['month'] . ' with a change from the average of ' . 
                         $this->formatNumber((abs($lowestValues['entries'] - $averageValue)) / ($averageValue / 100)) . '%');
                     $this->writeln('Max: ' . $this->formatNumber($highestValues['entries'], 0) . ' entries for the month of: ' . $highestValues['month'] . ' with a change from the average of ' .
@@ -132,9 +132,10 @@ class SugarBPMAnalysis extends MySQLBaseLogic
 
             if ($row = $stmt->fetch()) {
                 $this->processes[$id] = $row['name'] . '; Status: ' . $row['status'] . '; Module: ' . $row['module'] . '; Process id: ' . $row['id'] . '';
+                return $this->processes[$id];
             }
+            return '';
 
-            return $this->processes[$id];
         } else {
             // TODO
             return '';
@@ -149,7 +150,7 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             $totalProcesses = [];
 
             $this->writeln('');
-            $this->write('Retrieving information about record growth per process over time, please wait... ');
+            $this->write('Retrieving information about record growth per process, please wait... ');
             $query = "select count(f.id) as entries, f.pro_id as process, f.cas_flow_status as status from pmse_bpm_flow f group by f.pro_id, f.cas_flow_status";
             $stmt = $this->conn->executeQuery($query, []);
             $this->writeln('done.');
@@ -172,7 +173,9 @@ class SugarBPMAnalysis extends MySQLBaseLogic
                 }
 
                 foreach ($allValues as $value) {
-                    $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($value['process']) . '; Status: ' . $value['status']  . '; Entries: ' . $this->formatNumber($value['entries'], 0) . ' / total ' . $this->formatNumber($totalProcesses[$value['process']], 0));
+                    if (!empty($value['process'])) {
+                        $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($value['process']) . '; Status: ' . $value['status']  . '; Entries: ' . $this->formatNumber($value['entries'], 0) . ' / total ' . $this->formatNumber($totalProcesses[$value['process']], 0));
+                    }
                 }
 
                 $this->writeln('');
@@ -275,7 +278,9 @@ class SugarBPMAnalysis extends MySQLBaseLogic
             $this->writeln('The list of all the entries by month can be found below:');
 
             while ($row = $stmt->fetch()) {
-                $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($row['process']) . '; Month: ' . $row['month'] . '; Entries: ' . $this->formatNumber($row['entries'], 0));
+                if (!empty($row['process'])) {
+                    $this->writeln('Process: ' . $this->getBPMProcessFromFlowProId($row['process']) . '; Month: ' . $row['month'] . '; Entries: ' . $this->formatNumber($row['entries'], 0));
+                }
             }
 
             $this->writeln('');
