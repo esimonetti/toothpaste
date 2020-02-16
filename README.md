@@ -15,7 +15,7 @@ This tool allows the execution of various CLI actions including repair, useful o
 ## Installation
 Within your installation directory (eg: `~/toothpaste`), run the following:
 ```
-composer require esimonetti/toothpaste *
+composer require esimonetti/toothpaste dev-master
 ```
 Composer will download toothpaste and all its dependencies, so that you are ready to go.<br />
 To be able to execute local commands, toothpaste has to be able to access a local Sugar installation, be on the same server, and with php CLI available.
@@ -26,7 +26,7 @@ As there were some problems running the installation commands from outside the c
 docker exec -it sugar-cron bash
 mkdir ../toothpaste
 cd ../toothpaste
-composer require esimonetti/toothpaste *
+composer require esimonetti/toothpaste dev-master
 exit
 ```
 
