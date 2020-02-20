@@ -31,12 +31,18 @@ class Instance
         'sidecar',
     ];
 
+    protected static $dirMustBeWritable = [
+        'cache',
+        'custom',
+        'modules',
+    ];
+
     public static function validate($path, $output = null)
     {
         if (!empty($path) && is_dir($path)) {
             chdir($path);
             foreach (self::$dirToExist as $dir) {
-                if (!is_dir($dir) || !is_readable($dir) || !is_writable($dir)) {
+                if (!is_dir($dir) || !is_readable($dir) || (!is_writable($dir) && in_array($dir, self::$dirMustBeWritable))) {
                     if (is_object($output)) {
                         $output->writeln('Sugar\'s directory ' . $dir . ' either does not exist, it is not readable or it is not writable. ' .
                             'The instance located on ' . $path . ' is invalid');
