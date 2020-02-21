@@ -19,6 +19,8 @@ class SugarFormulas extends Sugar\BaseLogic
         '/rollupMin\(/',
         '/rollupSum\(/',
         '/count\(/',
+        '/opportunitySalesStage\(/',
+        '/rollupConditionalMinDate\(/',
         '/maxRelatedDate\(/',
     ];
 
