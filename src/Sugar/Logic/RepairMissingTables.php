@@ -38,19 +38,15 @@ class RepairMissingTables extends Sugar\BaseLogic
         }
 
         // now all the modules
-        global $beanList;
-        $fullModuleList = array_merge($beanList, $app_list_strings['moduleList']);
-        asort($fullModuleList);
+        $fullModuleList = $this->getFullModuleList();
         foreach ($fullModuleList as $module => $label) {
             $bean = \BeanFactory::newBean($module);
-            if ($bean instanceof \SugarBean) {
-                $table = $bean->getTableName();
-                if (!empty($table) && !$db->tableExists($table)) {
-                    // execute creation
-                    $this->write('Detected missing SQL table. Creating ' . $table . '... ');
-                    $db->createTable($bean);
-                    $this->writeln('done.');
-                }
+            $table = $bean->getTableName();
+            if (!empty($table) && !$db->tableExists($table)) {
+                // execute creation
+                $this->write('Detected missing SQL table. Creating ' . $table . '... ');
+                $db->createTable($bean);
+                $this->writeln('done.');
             }
         }
     }

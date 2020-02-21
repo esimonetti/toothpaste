@@ -107,9 +107,7 @@ class LogicHooks extends Sugar\BaseLogic
 
         $moduleHooks = [];
 
-        global $beanList, $app_list_strings;
-        $fullModuleList = array_merge($beanList, $app_list_strings['moduleList']);
-        asort($fullModuleList);
+        $fullModuleList = $this->getFullModuleList();
         foreach ($fullModuleList as $module => $label) {
             $bean = \BeanFactory::newBean($module);
             if ($bean instanceof \SugarBean && !empty($bean->module_dir)) {

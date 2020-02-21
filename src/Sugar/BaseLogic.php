@@ -85,4 +85,18 @@ class BaseLogic
         }
         return $files;
     }
+
+    protected function getFullModuleList() : array
+    {
+        $finalList = [];
+        $initialList = array_merge($GLOBALS['beanList'], $GLOBALS['app_list_strings']['moduleList']);
+        asort($initialList);
+        foreach ($initialList as $module => $label) {
+            $bean = \BeanFactory::newBean($module);
+            if ($bean instanceof \SugarBean) {
+                $finalList[$module] = $module;
+            }
+        }
+        return $finalList;
+    }
 }
