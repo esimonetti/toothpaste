@@ -13,8 +13,7 @@ class CustomTablesOrphansCleanup extends Sugar\BaseLogic
 
     public function cleanup()
     {
-        global $beanList, $app_list_strings;
-        $fullModuleList = array_merge($beanList, $app_list_strings['moduleList']);
+        $fullModuleList = $this->getFullModuleList();
 
         $db = \DBManagerFactory::getInstance();
 

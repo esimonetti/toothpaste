@@ -18,8 +18,7 @@ class MySQLOptimizeIndex extends MySQLOptimize
             $processedTables = [];
 
             // modules
-            $fullModuleList = array_merge($GLOBALS['beanList'], $GLOBALS['app_list_strings']['moduleList']);
-            asort($fullModuleList);
+            $fullModuleList = $this->getFullModuleList();
             $queryDataSizeEstimation = 'select ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) as size from information_schema.TABLES where TABLE_NAME = ?';
             foreach($fullModuleList as $module => $label) {
                 $bean = \BeanFactory::newBean($module);
