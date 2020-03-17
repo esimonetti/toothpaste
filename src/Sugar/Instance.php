@@ -8,7 +8,6 @@ namespace Toothpaste\Sugar;
 class Instance
 {
     protected static $filesToExist = [
-        '.htaccess',
         'index.php',
         'config.php',
         'sugar_version.php',
