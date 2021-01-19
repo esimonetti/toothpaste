@@ -34,7 +34,7 @@ class Toothpaste
 
     public static function isLinux()
     {
-        return (self::getOS() === 'linux') ? true : false;
+        return (in_array(self::getOS(), ['linux', 'darwin'])) ? true : false;
     }
 
     public static function resetStartTime()
