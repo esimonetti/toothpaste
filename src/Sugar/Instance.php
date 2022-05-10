@@ -129,7 +129,10 @@ class Instance
         self::buildAutoloaderCache();
 
         // quick load of all beans
-        global $beanList;
+        global $beanList, $current_language;
+        // load app strings
+        $app_list_strings = return_app_list_strings_language($current_language);
+        $app_strings = return_application_language($current_language);
         $full_module_list = array_merge($beanList, $app_list_strings['moduleList']);
         foreach ($full_module_list as $module => $label) {
             $bean = \BeanFactory::newBean($module);
@@ -137,10 +140,6 @@ class Instance
             \LanguageManager::createLanguageFile($module, ['default'], true);
             $mod_strings = return_module_language($current_language, $module);
         }
-
-        // load app strings
-        $app_list_strings = return_app_list_strings_language($current_language);
-        $app_strings = return_application_language($current_language);
 
         // load api
         $sd = new \ServiceDictionary();
