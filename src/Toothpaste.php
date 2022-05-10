@@ -7,7 +7,7 @@ namespace Toothpaste;
 
 class Toothpaste
 {
-    const SW_VERSION = '0.2.1';
+    const SW_VERSION = '0.2.2';
     const SW_NAME = 'Toothpaste';
 
     protected static $startTime;
@@ -34,7 +34,7 @@ class Toothpaste
 
     public static function isLinux()
     {
-        return (self::getOS() === 'linux') ? true : false;
+        return (self::getOS() === 'linux' || self::getOS() === 'darwin') ? true : false;
     }
 
     public static function resetStartTime()
