@@ -7,7 +7,7 @@ CLI utility to analyse, optimise and provide additional functionality to your Su
 This tool allows the execution of various CLI actions including repair, useful ongoing maintenance, identification of possible problems and extracting data from a Sugar installation.
 
 ## Requirements
-* Linux
+* Linux or Macintosh
 * PHP >= 7.1
 * Composer
 * Some commands only run with MySQL at this stage
