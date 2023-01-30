@@ -49,5 +49,6 @@ class SugarFormulasUsageCommand extends Command
                 $output->writeln($instance . ' does not contain a valid Sugar installation. Aborting...');
             }
         }
+        return 1;
     }
 }

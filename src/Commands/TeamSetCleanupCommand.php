@@ -53,5 +53,6 @@ class TeamSetCleanupCommand extends Command
                 }
             }
         }
+        return 1;
     }
 }

@@ -2,6 +2,12 @@
 
 *This tool is provided AS-IS and might have bugs. Please help create and provide bug fixes!*
 
+## Donations
+
+If you find this software useful, please consider supporting the work that went into it, with a monthly amount. Thank you!
+
+[<img src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_LG.gif">](https://www.paypal.com/donate/?business=35FG9B3LQ3WPA&no_recurring=0&item_name=If+you+find+this+software+useful%2C+please+consider+supporting+the+work+that+went+into+it%2C+with+a+monthly+amount.+Thank+you%21&currency_code=AUD)
+
 ## Description
 CLI utility to analyse, optimise and provide additional functionality to your Sugar system. As it is a CLI only tool, it cannot execute from within Sugar Cloud.<br />
 This tool allows the execution of various CLI actions including repair, useful ongoing maintenance, identification of possible problems and extracting data from a Sugar installation.

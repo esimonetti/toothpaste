@@ -53,5 +53,6 @@ class CustomTableOrphansCleanupCommand extends Command
                 }
             }
         }
+        return 1;
     }
 }

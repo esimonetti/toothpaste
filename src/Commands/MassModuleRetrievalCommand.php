@@ -55,5 +55,6 @@ class MassModuleRetrievalCommand extends Command
         } else {
             $output->writeln('Please make sure all required parameters are passed correctly to the command. Check with --help for the correct syntax');
         }
+        return 1;
     }
 }

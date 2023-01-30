@@ -55,5 +55,6 @@ class SugarBPMFlowCleanupCommand extends Command
                 }
             }
         }
+        return 1;
     }
 }

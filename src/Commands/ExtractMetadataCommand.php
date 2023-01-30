@@ -53,5 +53,6 @@ class ExtractMetadataCommand extends Command
                 }
             }
         }
+        return 1;
     }
 }

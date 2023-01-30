@@ -10,7 +10,7 @@ if (is_file($autoload = dirname(__FILE__) . '/../../../autoload.php')) {
 use Toothpaste\Toothpaste;
 use Symfony\Component\Console\Application;
 
-echo Toothpaste::getSoftwareInfo() . PHP_EOL;
+Toothpaste::registerSupportInfo();
 
 if (!Toothpaste::isOSSupported()) {
     echo 'This software runs exclusively under Linux or Macintosh, aborting.' . PHP_EOL;

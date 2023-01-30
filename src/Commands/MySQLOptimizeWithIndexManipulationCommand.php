@@ -54,5 +54,6 @@ class MySQLOptimizeWithIndexManipulationCommand extends Command
                 }
             }
         }
+        return 1;
     }
 }
