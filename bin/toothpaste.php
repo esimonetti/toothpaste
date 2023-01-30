@@ -12,8 +12,8 @@ use Symfony\Component\Console\Application;
 
 echo Toothpaste::getSoftwareInfo() . PHP_EOL;
 
-if (!Toothpaste::isLinux()) {
-    echo 'This software runs exclusively under Linux, aborting.' . PHP_EOL;
+if (!Toothpaste::isOSSupported()) {
+    echo 'This software runs exclusively under Linux or Macintosh, aborting.' . PHP_EOL;
     exit(1);
 }
 

@@ -7,8 +7,9 @@ namespace Toothpaste;
 
 class Toothpaste
 {
-    const SW_VERSION = '0.2.2';
+    const SW_VERSION = '0.2.3';
     const SW_NAME = 'Toothpaste';
+    const SUPPORTED_OS = array('linux', 'darwin');
 
     protected static $startTime;
 
@@ -32,9 +33,9 @@ class Toothpaste
         return strtolower(php_uname('s'));
     }
 
-    public static function isLinux()
+    public static function isOSSupported()
     {
-        return (self::getOS() === 'linux' || self::getOS() === 'darwin') ? true : false;
+        return in_array(self::getOS(), self::SUPPORTED_OS);
     }
 
     public static function resetStartTime()
