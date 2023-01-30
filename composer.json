@@ -17,7 +17,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.1",
-        "symfony/console": "4.3.*",
+        "symfony/console": "5.4.*",
         "guzzlehttp/guzzle": "6.4.*"
     },
     "require-dev": {
