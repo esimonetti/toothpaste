@@ -53,6 +53,6 @@ class TeamSetCleanupCommand extends Command
                 }
             }
         }
-        return 1;
+        return Command::SUCCESS;
     }
 }
