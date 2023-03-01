@@ -46,7 +46,7 @@ class MassModuleRetrievalCommand extends Command
         $filter = $input->getOption('filter');
 
         if (!empty($url) && !empty($user) && !empty($pass) && !empty($module) && !empty($dir) && !empty($limit)) {
-            $logic = new Sugar\Logic\MassRetrieverApi($url, 'base', $user, $pass, $module); 
+            $logic = new Sugar\Logic\MassRetrieverApi($url, 'base', $user, $pass, $module);
             $logic->setLogger($output);
             $output->writeln('Executing retrival of the records for module ' . $module  . ' in chunks of ' . $limit  . ' records, from offset ' . $offset . ' and saving them into ' . $dir . ' ...');
             $output->writeln('Connecting to url ' . $url . '...');
@@ -55,6 +55,6 @@ class MassModuleRetrievalCommand extends Command
         } else {
             $output->writeln('Please make sure all required parameters are passed correctly to the command. Check with --help for the correct syntax');
         }
-        return 1;
+        return Command::SUCCESS;
     }
 }
